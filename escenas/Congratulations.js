@@ -1,18 +1,41 @@
-import { RestartButton } from "../componentes/RestartButton .js";
-
 export class Congratulations extends Phaser.Scene {
-    constructor(){
-        super({key: 'congratulations'});
-        this.RestartButton = new RestartButton(this);
-    }
-    preload(){
-        this.load.image('congratulations', 'images/congratulations.png');
-        //precargamos el componente restarbutton:
-       this.RestartButton.preload();
-    }
-    create(){
-        this.add.image(410,250,'background'); // No necesita precarga, ya estaba precargada en la escena game.js
-        this.RestartButton.create();
-        this.GameoverImage=this.add.image(400,90,'congratulations');
-    }
+  constructor() {
+    super({ key: "congratulations" });
+  }
+
+  preload() {
+    // por si esta escena se abre sin pasar por Inicio
+    this.load.image("start", "images/start.png");
+  }
+
+  create() {
+    const { width, height } = this.scale;
+
+    // Imagen centrada
+    const img = this.add.image(width / 2, height / 2, "congratulations");
+
+    // Escala para que se vea entera
+    const scaleX = width / img.width;
+    const scaleY = height / img.height;
+    const scale = Math.min(scaleX, scaleY);
+    img.setScale(scale);
+    img.setDepth(10);
+
+    // ───────── BOTÓN START para volver a jugar ─────────
+    const startBtn = this.add.image(width / 2, height * 0.85, "start");
+    startBtn.setDepth(20);
+    startBtn.setScale(0.3);
+    startBtn.setInteractive({ useHandCursor: true });
+
+    startBtn.on("pointerdown", () => {
+      // reinicia el juego
+      this.scene.start("game");
+      // si prefieres volver al menú:
+      // this.scene.start("inicio");
+    });
+
+    // hover (opcional)
+    startBtn.on("pointerover", () => startBtn.setScale(0.32));
+    startBtn.on("pointerout", () => startBtn.setScale(0.3));
+  }
 }

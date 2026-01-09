@@ -11,8 +11,9 @@ export class Gameover extends Phaser.Scene {
         this.RestartButton.preload();
     }
     create(){
-        this.add.image(410,250,'background'); // No necesita precarga, ya estaba precargada en la escena game.js
-        this.RestartButton.create();
-        this.GameoverImage=this.add.image(400,90,'gameover');
-    }
+        this.add.image(410,250,'background');
+    this.GameoverImage = this.add.image(400,90,'gameover'); // 👈 primero esto
+    this.RestartButton.create();                            // 👈 y luego el botón
+    
+}
 }
